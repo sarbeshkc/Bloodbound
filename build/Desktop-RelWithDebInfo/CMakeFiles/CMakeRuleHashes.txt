@@ -1,0 +1,4 @@
+# Hashes of file build rules.
+50c5bd5a6e7379fa27461109d0d1f172 Bloodbound_autogen/timestamp
+ecb0f5c77a6a6e352eb1579b7bd84234 CMakeFiles/Bloodbound_autogen
+ecb0f5c77a6a6e352eb1579b7bd84234 CMakeFiles/Bloodbound_autogen_timestamp_deps
