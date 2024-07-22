@@ -25,8 +25,8 @@ DISTFILES += \
     HealthQuestionnairePage.qml \
     HospitalDashboardPage.qml \
     HospitalLoginPage.qml \
-    HospitalRegestrationPage.qml \
     HospitalSignUpPage.qml \
+    LearnMorePage.qml \
     LoginPage.qml \
     MainView.qml \
     PasswordResetPage.qml \

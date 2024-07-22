@@ -1,3 +1,4 @@
+// SignUpPage.qml
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
@@ -5,19 +6,11 @@ import QtQuick.Layouts 1.12
 Page {
     id: signupPage
 
-    // Background image
-    Image {
-        anchors.fill: parent
-        source: "/home/satvara/Downloads/GIve_me_a_icon_for_a_app_called_bloodbound_and_it_should_be_related_to_donating_blood_png.png"
-        fillMode: Image.PreserveAspectCrop
-        opacity: 0.6
-    }
-
-    // Background overlay rectangle
-    Rectangle {
-        anchors.fill: parent
-        color: "#000000"
-        opacity: 0.5
+    background: Rectangle {
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#4A90E2" }
+            GradientStop { position: 1.0; color: "#FFFFFF" }
+        }
     }
 
     ColumnLayout {
@@ -25,7 +18,14 @@ Page {
         spacing: 20
         width: 300
 
-        // User signup button
+        Text {
+            text: "Join Bloodbound"
+            font.pixelSize: 24
+            font.bold: true
+            color: "#FFFFFF"
+            Layout.alignment: Qt.AlignHCenter
+        }
+
         Button {
             text: "User Signup"
             Layout.fillWidth: true
@@ -39,7 +39,6 @@ Page {
             }
         }
 
-        // Hospital signup button
         Button {
             text: "Hospital Signup"
             Layout.fillWidth: true
@@ -53,9 +52,21 @@ Page {
             }
         }
 
-        // Login link
+        Button {
+            text: "Learn More About Blood Donation"
+            Layout.fillWidth: true
+            font.pixelSize: 16
+            onClicked: {
+                stackView.push("LearnMorePage.qml");
+            }
+            background: Rectangle {
+                color: "#4CAF50"
+                radius: 5
+            }
+        }
+
         Text {
-            text: "Back to Login"
+            text: "Already have an account? Log in"
             color: "#FFFFFF"
             font.pixelSize: 16
             font.underline: true
@@ -63,7 +74,20 @@ Page {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    // Navigate back to the login page
+                    stackView.push("UserLoginPage.qml");
+                }
+            }
+        }
+
+        Text {
+            text: "Back to Main Menu"
+            color: "#FFFFFF"
+            font.pixelSize: 16
+            font.underline: true
+            Layout.alignment: Qt.AlignHCenter
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
                     stackView.pop();
                 }
             }

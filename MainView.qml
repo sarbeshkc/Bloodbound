@@ -10,21 +10,11 @@ ApplicationWindow {
     height: 749
     title: "Bloodbound"
 
-    // Background image
-    Image {
-        source: "/home/satvara/Downloads/image.jpeg"
-        anchors.fill: parent
-        fillMode: Image.PreserveAspectCrop
-        z: -1
-    }
-
-    // Main content area
     StackView {
         id: stackView
         anchors.fill: parent
         initialItem: LoginPage {}
 
-        // Transition animation
         pushEnter: Transition {
             PropertyAnimation {
                 property: "opacity"
@@ -59,20 +49,16 @@ ApplicationWindow {
         }
     }
 
-    // Navigation functions
     function showLoginScreen() {
         stackView.pop();
         stackView.push("LoginPage.qml");
     }
-
     function showWelcomeScreen(username, userType) {
         stackView.push("WelcomePage.qml", {"username": username, "userType": userType});
     }
-
     function showSignUpPage() {
         stackView.push("SignUpPage.qml");
     }
-
     function showResetPasswordPage() {
         stackView.push("PasswordResetPage.qml");
     }

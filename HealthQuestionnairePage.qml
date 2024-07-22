@@ -1,71 +1,106 @@
-// HealthQuestionnairePage.qml
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
 
-Page {
-    id: healthQuestionnairePage
+ApplicationWindow {
+    id: donationWindow
+    width: 500
+    height: 600
+    visible: true
+    title: "Donation Form"
 
-    property string userEmail: ""
+    property var healthQuestions: {
+        "Diabetes": false,
+        "Hepatitis": false,
+        "HIV/AIDS": false
+    }
 
-    // Background rectangle with opacity
-    Rectangle {
-        anchors.fill: parent
-        color: "#000000"
-        opacity: 0.7
+    function submitDonation() {
+        var isEligible = !healthQuestions["Diabetes"] && !healthQuestions["Hepatitis"] && !healthQuestions["HIV/AIDS"];
+
+        if (isEligible) {
+            console.log("Donation submitted for:", nameInput.text);
+            console.log("Health conditions:", JSON.stringify(healthQuestions));
+            console.log("Blood amount:", bloodAmountInput.text);
+            donationWindow.close();
+        } else {
+            infoDialog.open();
+        }
     }
 
     ColumnLayout {
-        anchors.centerIn: parent
+        anchors.fill: parent
+        anchors.margins: 20
         spacing: 20
 
-        // Question 1
         Text {
-            text: "Question 1: How often do you exercise?"
-            color: "#FFFFFF"
-            font.pixelSize: 18
+            text: "Donation Form"
+            font.pixelSize: 24
+            font.bold: true
+            Layout.alignment: Qt.AlignHCenter
         }
+
         TextField {
-            id: question1Input
-            placeholderText: "Enter your answer"
+            id: nameInput
+            placeholderText: "Enter your name"
             Layout.fillWidth: true
-            background: Rectangle {
-                color: "#FFFFFF"
-                radius: 5
+        }
+
+        GroupBox {
+            title: "Health Questions"
+            Layout.fillWidth: true
+
+            ColumnLayout {
+                anchors.fill: parent
+                spacing: 10
+
+                CheckBox {
+                    text: "Do you have Diabetes?"
+                    onCheckedChanged: healthQuestions["Diabetes"] = checked
+                }
+
+                CheckBox {
+                    text: "Do you have Hepatitis?"
+                    onCheckedChanged: healthQuestions["Hepatitis"] = checked
+                }
+
+                CheckBox {
+                    text: "Do you have HIV/AIDS?"
+                    onCheckedChanged: healthQuestions["HIV/AIDS"] = checked
+                }
             }
         }
 
-        // Question 2
-        Text {
-            text: "Question 2: Do you have any chronic health conditions?"
-            color: "#FFFFFF"
-            font.pixelSize: 18
-        }
-        TextField {
-            id: question2Input
-            placeholderText: "Enter your answer"
+        RowLayout {
             Layout.fillWidth: true
-            background: Rectangle {
-                color: "#FFFFFF"
-                radius: 5
+            Label {
+                text: "Blood Amount (in ml):"
+            }
+            TextField {
+                id: bloodAmountInput
+                placeholderText: "Enter blood amount"
+                validator: DoubleValidator {
+                    bottom: 0
+                    top: 1000
+                    decimals: 2
+                }
+                Layout.fillWidth: true
             }
         }
 
-        // Submit button
         Button {
             text: "Submit"
             Layout.alignment: Qt.AlignHCenter
-            onClicked: {
-                // Store health info in the database
-                dbManager.insertHealthInfo(userEmail, "Question 1", question1Input.text);
-                dbManager.insertHealthInfo(userEmail, "Question 2", question2Input.text);
-                // Navigate to the user dashboard or any other relevant page
-                mainWindow.showUserDashboardPage(userEmail);
-            }
-            background: Rectangle {
-                color: "#FF5733"
-                radius: 5
-            }
+            onClicked: submitDonation()
         }
+    }
+
+    Dialog {
+        id: infoDialog
+        title: "Information"
+        Text {
+            text: "You are not eligible to donate blood due to your health conditions."
+        }
+        standardButtons: Dialog.Ok
     }
 }

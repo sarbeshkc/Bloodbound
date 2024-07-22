@@ -6,20 +6,11 @@ import QtQuick.Dialogs
 Page {
     id: userLoginPage
 
-
-    // Background image
-    // Image {
-    //     anchors.fill: parent
-    //     source: "/home/satvara/Downloads/GIve_me_a_icon_for_a_app_called_bloodbound_and_it_should_be_related_to_donating_blood_png.png"
-    //     fillMode: Image.PreserveAspectCrop
-    //     opacity: 0.6
-    // }
-
-    // Background overlay rectangle
-    Rectangle {
-        anchors.fill: parent
-        color: "#000000"
-        opacity: 0.5
+    background: Rectangle {
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#4A90E2" }
+            GradientStop { position: 1.0; color: "#FFFFFF" }
+        }
     }
 
     ColumnLayout {
@@ -29,51 +20,59 @@ Page {
 
         TextField {
             id: emailInput
-            placeholderText: "Email"
+            placeholderText: "Enter your email address"
             Layout.fillWidth: true
-             font.pixelSize: 18
-             background: Rectangle {
-                 color: "#FFFFFF"
-                 radius: 5
-             }
-             leftPadding: 10
-             rightPadding: 10
-             topPadding: 8
-             bottomPadding: 8
-             onFocusChanged: {
-                 if (focus) {
-                     color = "#333333"
-                 } else {
-                     color = "#666666"
-                 }
-             }
-         }
+            font.pixelSize: 18
+            background: Rectangle {
+                color: "#FFFFFF"
+                radius: 5
+                border.color: emailInput.activeFocus ? "#4CAF50" : "#CCCCCC"
+                border.width: emailInput.activeFocus ? 2 : 1
+            }
+            leftPadding: 10
+            rightPadding: 10
+        }
 
-
-        TextField {
-            id: passwordInput
-            placeholderText: "Password"
-            echoMode: TextInput.Password
+        RowLayout {
             Layout.fillWidth: true
-             font.pixelSize: 18
-             background: Rectangle {
-                 color: "#FFFFFF"
-                 radius: 5
-             }
-             leftPadding: 10
-             rightPadding: 10
-             topPadding: 8
-             bottomPadding: 8
-             onFocusChanged: {
-                 if (focus) {
-                     color = "#333333"
-                 } else {
-                     color = "#666666"
-                 }
-             }
-         }
+            spacing: 10
 
-        // Login button
+            TextField {
+                id: passwordInput
+                placeholderText: "Enter your password"
+                echoMode: TextInput.Password
+                Layout.fillWidth: true
+                font.pixelSize: 18
+                background: Rectangle {
+                    color: "#FFFFFF"
+                    radius: 5
+                    border.color: passwordInput.activeFocus ? "#4CAF50" : "#CCCCCC"
+                    border.width: passwordInput.activeFocus ? 2 : 1
+                }
+                leftPadding: 10
+                rightPadding: 10
+            }
+
+            Button {
+                id: togglePasswordVisibility
+                text: passwordInput.echoMode === TextInput.Normal ? "Hide" : "Show"
+                onClicked: {
+                    passwordInput.echoMode = passwordInput.echoMode === TextInput.Normal ? TextInput.Password : TextInput.Normal
+                }
+                background: Rectangle {
+                    color: "#4CAF50"
+                    radius: 5
+                }
+                contentItem: Text {
+                    text: togglePasswordVisibility.text
+                    font.pixelSize: 14
+                    color: "white"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+        }
+
         Button {
             text: "Login"
             Layout.fillWidth: true
@@ -84,49 +83,74 @@ Page {
                 var success = dbManager.userLogin(email, password);
                 if (success) {
                     console.log("User login successful");
-                    // Navigate to the user dashboard
                     stackView.push("UserDashboardPage.qml");
                 } else {
                     console.log("User login failed");
                     errorDialog.open();
-
                 }
             }
             background: Rectangle {
-                color: "#FF5733"
+                color: "#4CAF50"
                 radius: 5
             }
         }
-        Dialog {
-            id: errorDialog
-            title: "Login Failed"
-            standardButtons: Dialog.Ok
-            modal: true
 
-            contentItem: Text {
-                text: "Invalid email or password. Please try again."
-            }
-            onOpened: {
-                var centerX = (parent.width - width) / 2;
-                var centerY = (parent.height - height) / 2;
-                x = centerX;
-                y = centerY;
-            }
-        }
-        // main login page link
         Text {
-            text: "Back to Login"
-            color: "#FFFFFF"
+            text: "Forgot Password?"
+            color: "#4A90E2"
             font.pixelSize: 16
             font.underline: true
             Layout.alignment: Qt.AlignHCenter
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    // to the main login page
+                    stackView.push("PasswordResetPage.qml");
+                }
+            }
+        }
+
+        Text {
+            text: "Don't have an account? Sign up"
+            color: "#4A90E2"
+            font.pixelSize: 16
+            font.underline: true
+            Layout.alignment: Qt.AlignHCenter
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    stackView.push("UserSignupPage.qml");
+                }
+            }
+        }
+
+        Text {
+            text: "Back to Main Menu"
+            color: "#4A90E2"
+            font.pixelSize: 16
+            font.underline: true
+            Layout.alignment: Qt.AlignHCenter
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
                     stackView.pop();
                 }
             }
-            }
+        }
+    }
+
+    Dialog {
+        id: errorDialog
+        title: "Login Failed"
+        standardButtons: Dialog.Ok
+
+        contentItem: Text {
+            text: "Invalid email or password. Please try again."
+            color: "#FF0000"
+            font.pixelSize: 14
+        }
+
+        onAccepted: {
+            errorDialog.close();
+        }
     }
 }

@@ -5,19 +5,11 @@ import QtQuick.Layouts 1.12
 Page {
     id: hospitalSignupPage
 
-    // Background image
-    Image {
-        anchors.fill: parent
-        source: "/home/satvara/Downloads/GIve_me_a_icon_for_a_app_called_bloodbound_and_it_should_be_related_to_donating_blood_png.png"
-        fillMode: Image.PreserveAspectCrop
-        opacity: 0.6
-    }
-
-    // Background overlay rectangle
-    Rectangle {
-        anchors.fill: parent
-        color: "#000000"
-        opacity: 0.5
+    background: Rectangle {
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#4A90E2" }
+            GradientStop { position: 1.0; color: "#FFFFFF" }
+        }
     }
 
     ColumnLayout {
@@ -25,105 +17,116 @@ Page {
         spacing: 20
         width: 300
 
-        // Name input
         TextField {
             id: nameInput
-            placeholderText: "Hospital Name"
+            placeholderText: "Enter hospital name"
             Layout.fillWidth: true
-             font.pixelSize: 18
-             background: Rectangle {
-                 color: "#FFFFFF"
-                 radius: 5
-             }
-             leftPadding: 10
-             rightPadding: 10
-             topPadding: 8
-             bottomPadding: 8
-             onFocusChanged: {
-                 if (focus) {
-                     color = "#333333"
-                 } else {
-                     color = "#666666"
-                 }
-             }
-         }
+            font.pixelSize: 18
+            background: Rectangle {
+                color: "#FFFFFF"
+                radius: 5
+                border.color: nameInput.activeFocus ? "#FF5733" : "#CCCCCC"
+                border.width: nameInput.activeFocus ? 2 : 1
+            }
+            leftPadding: 10
+            rightPadding: 10
+        }
 
-        // Email input
         TextField {
             id: emailInput
-            placeholderText: "Email"
+            placeholderText: "Enter hospital email address"
             Layout.fillWidth: true
-             font.pixelSize: 18
-             background: Rectangle {
-                 color: "#FFFFFF"
-                 radius: 5
-                 border.color: nameInput.focus ? "#FF5733" : "#CCCCCC"
-                 border.width: nameInput.focus ? 2 : 1
-             }
-             leftPadding: 10
-             rightPadding: 10
-             topPadding: 8
-             bottomPadding: 8
-             onFocusChanged: {
-                 if (focus) {
-                     color = "#333333"
-                 } else {
-                     color = "#666666"
-                 }
-             }
-         }
+            font.pixelSize: 18
+            background: Rectangle {
+                color: "#FFFFFF"
+                radius: 5
+                border.color: emailInput.activeFocus ? "#FF5733" : "#CCCCCC"
+                border.width: emailInput.activeFocus ? 2 : 1
+            }
+            leftPadding: 10
+            rightPadding: 10
+        }
 
-        // Password input
-        TextField {
-            id: passwordInput
-            placeholderText: "Password"
-            echoMode: TextInput.Password
+        RowLayout {
             Layout.fillWidth: true
-             font.pixelSize: 18
-             background: Rectangle {
-                 color: "#FFFFFF"
-                 radius: 5
-                 border.color: nameInput.focus ? "#FF5733" : "#CCCCCC"
-                 border.width: nameInput.focus ? 2 : 1
-             }
-             leftPadding: 10
-             rightPadding: 10
-             topPadding: 8
-             bottomPadding: 8
-             onFocusChanged: {
-                 if (focus) {
-                     color = "#333333"
-                 } else {
-                     color = "#666666"
-                 }
-             }
-         }
+            spacing: 10
 
-        // Confirm password input
-        TextField {
-            id: confirmPasswordInput
-            placeholderText: "Confirm Password"
-            echoMode: TextInput.Password
+            TextField {
+                id: passwordInput
+                placeholderText: "Create a password"
+                echoMode: TextInput.Password
+                Layout.fillWidth: true
+                font.pixelSize: 18
+                background: Rectangle {
+                    color: "#FFFFFF"
+                    radius: 5
+                    border.color: passwordInput.activeFocus ? "#FF5733" : "#CCCCCC"
+                    border.width: passwordInput.activeFocus ? 2 : 1
+                }
+                leftPadding: 10
+                rightPadding: 10
+            }
+
+            Button {
+                id: togglePasswordVisibility
+                text: passwordInput.echoMode === TextInput.Normal ? "Hide" : "Show"
+                onClicked: {
+                    passwordInput.echoMode = passwordInput.echoMode === TextInput.Normal ? TextInput.Password : TextInput.Normal
+                }
+                background: Rectangle {
+                    color: "#FF5733"
+                    radius: 5
+                }
+                contentItem: Text {
+                    text: togglePasswordVisibility.text
+                    font.pixelSize: 14
+                    color: "white"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+        }
+
+        RowLayout {
             Layout.fillWidth: true
-             font.pixelSize: 18
-             background: Rectangle {
-                 color: "#FFFFFF"
-                 radius: 5
-             }
-             leftPadding: 10
-             rightPadding: 10
-             topPadding: 8
-             bottomPadding: 8
-             onFocusChanged: {
-                 if (focus) {
-                     color = "#333333"
-                 } else {
-                     color = "#666666"
-                 }
-             }
-         }
+            spacing: 10
 
-        // Signup button
+            TextField {
+                id: confirmPasswordInput
+                placeholderText: "Confirm your password"
+                echoMode: TextInput.Password
+                Layout.fillWidth: true
+                font.pixelSize: 18
+                background: Rectangle {
+                    color: "#FFFFFF"
+                    radius: 5
+                    border.color: confirmPasswordInput.activeFocus ? "#FF5733" : "#CCCCCC"
+                    border.width: confirmPasswordInput.activeFocus ? 2 : 1
+                }
+                leftPadding: 10
+                rightPadding: 10
+            }
+
+            Button {
+                id: toggleConfirmPasswordVisibility
+                text: confirmPasswordInput.echoMode === TextInput.Normal ? "Hide" : "Show"
+                onClicked: {
+                    confirmPasswordInput.echoMode = confirmPasswordInput.echoMode === TextInput.Normal ? TextInput.Password : TextInput.Normal
+                }
+                background: Rectangle {
+                    color: "#FF5733"
+                    radius: 5
+                }
+                contentItem: Text {
+                    text: toggleConfirmPasswordVisibility.text
+                    font.pixelSize: 14
+                    color: "white"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+        }
+
         Button {
             text: "Sign Up"
             Layout.fillWidth: true
@@ -136,14 +139,16 @@ Page {
 
                 if (password === confirmPassword) {
                     var success = dbManager.insertHospital(name, email, password);
-                    if (success){
-      donationPopup.open();                    } else {
+                    if (success) {
+                        console.log("Hospital signup successful");
+                        stackView.push("HospitalDashboardPage.qml");
+                    } else {
                         console.log("Hospital signup failed");
                         // Show an error message
-
                     }
                 } else {
                     console.log("Passwords do not match");
+                    // Show an error message indicating that the passwords do not match
                 }
             }
             background: Rectangle {
@@ -152,106 +157,8 @@ Page {
             }
         }
 
-
-        // Blood donation registration pop-up
-           Popup {
-               id: donationPopup
-               anchors.centerIn: parent
-               modal: true
-               focus: true
-               // Background color of the pop-up
-               background: Rectangle {
-                   color: "#1E1E1E"  // Dark background color
-                   radius: 5
-               }
-
-               // Blood donation registration form
-               Column {
-                   spacing: 20
-
-                   // Registration title
-                   Text {
-                       text: qsTr("Blood Donation Registration")
-                       font.pixelSize: 20
-                       font.weight: Font.Bold
-                       color: "white"
-                       horizontalAlignment: Text.AlignHCenter
-                   }
-
-                   // Blood type input field
-                   TextField {
-                       id: bloodTypeField
-                       width: parent.width
-                       placeholderText: qsTr("Blood Type")
-                       color: "white"
-                       background: Rectangle {
-                           color: "#333333"
-                           radius: 5
-                       }
-                   }
-
-                   // Last donation date input field
-                   TextField {
-                       id: lastDonationField
-                       width: parent.width
-                       placeholderText: qsTr("Last Donation Date (YYYY-MM-DD)")
-                       color: "white"
-                       background: Rectangle {
-                           color: "#333333"
-                           radius: 5
-                       }
-                   }
-
-                   // Medical conditions input field
-                   TextField {
-                       id: medicalConditionsField
-                       width: parent.width
-                       placeholderText: qsTr("Medical Conditions (if any)")
-                       color: "white"
-                       background: Rectangle {
-                           color: "#333333"
-                           radius: 5
-                       }
-                   }
-
-                   // Registration button
-                   Button {
-                       width: parent.width
-                       text: qsTr("Register")
-                       font.pixelSize: 18
-                       onClicked: {
-                           // Get the entered values from input fields
-                           var bloodType = bloodTypeField.text;
-                           var lastDonation = lastDonationField.text;
-                           var medicalConditions = medicalConditionsField.text;
-
-                           // Get the user ID of the last inserted user
-                           var userId = getLastUserId();
-                           if (userId !== -1) {
-
-                           }else {
-                               console.log("Failed to get user ID");
-                           }
-
-                           // Close the pop-up after registration
-                           donationPopup.close();
-                       }
-                       background: Rectangle {
-                           color: "#FF5733"
-                           radius: 5
-                       }
-              }   }  }
-
-
-
-
-
-
-
-
-        // Back to main signup page link
         Text {
-            text: "Back to Signup"
+            text: "Already have an account? Log in"
             color: "#FFFFFF"
             font.pixelSize: 16
             font.underline: true
@@ -259,7 +166,6 @@ Page {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    // Navigate back to the main signup page
                     stackView.pop();
                 }
             }
