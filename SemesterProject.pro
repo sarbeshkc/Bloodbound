@@ -25,15 +25,16 @@ DISTFILES += \
     HealthQuestionnairePage.qml \
     HospitalDashboardPage.qml \
     HospitalLoginPage.qml \
-    HospitalSignUpPage.qml \
+    HospitalSignupPage.qml \
     LearnMorePage.qml \
     LoginPage.qml \
+    LoginSignupChoicePage.qml \
     MainView.qml \
     PasswordResetPage.qml \
     SignUpPage.qml \
     UserDashboardPage.qml \
     UserLoginPage.qml \
-    UserSignUpPage.qml
+    UserSignupPage.qml
 
 RESOURCES += \
     resources.qrc

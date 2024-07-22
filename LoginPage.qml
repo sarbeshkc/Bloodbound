@@ -1,83 +1,122 @@
-// LoginPage.qml
-import QtQuick 2.12
-import QtQuick.Controls 2.12
-import QtQuick.Layouts 1.12
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 
 Page {
-    id: loginPage
+    id: mainMenuPage
+
+    background: Rectangle {
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#FF5733" }
+            GradientStop { position: 1.0; color: "#FFFFFF" }
+        }
+    }
 
     Rectangle {
-        anchors.fill: parent
-        color: "#F0F0F0"
-    }
-
-    Item {
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        anchors.topMargin: parent.height * 0.1
+        id: menuCard
         width: parent.width * 0.8
-        height: welcomeText.height
-
-        Text {
-            id: welcomeText
-            anchors.centerIn: parent
-            text: qsTr("Welcome to Bloodbound")
-            font.pixelSize: 48
-            font.family: "Arial"
-            font.weight: Font.Bold
-            color: "#333333"
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-        }
-    }
-
-    ColumnLayout {
+        height: parent.height * 0.8
         anchors.centerIn: parent
-        spacing: 20
-        width: 300
+        color: "white"
+        radius: 10
 
-        Button {
-            text: "User Login"
-            Layout.fillWidth: true
-            font.pixelSize: 18
-            onClicked: stackView.push("UserLoginPage.qml")
-            background: Rectangle {
-                color: "#4CAF50"
-                radius: 5
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.margins: 20
+            spacing: 20
+
+            Image {
+                source: "qrc:/assets/logo.png" // Make sure to add your logo to the resources
+                Layout.alignment: Qt.AlignHCenter
+                Layout.preferredWidth: 100
+                Layout.preferredHeight: 100
             }
-        }
 
-        Button {
-            text: "Hospital Login"
-            Layout.fillWidth: true
-            font.pixelSize: 18
-            onClicked: stackView.push("HospitalLoginPage.qml")
-            background: Rectangle {
-                color: "#2196F3"
-                radius: 5
+            Text {
+                text: "BloodBound"
+                font.pixelSize: 32
+                font.bold: true
+                color: "#FF5733"
+                Layout.alignment: Qt.AlignHCenter
             }
-        }
 
-        Button {
-            text: "Sign Up"
-            Layout.fillWidth: true
-            font.pixelSize: 18
-            onClicked: stackView.push("SignUpPage.qml")
-            background: Rectangle {
-                color: "#FF5722"
-                radius: 5
+            Text {
+                text: "Connecting donors and hospitals"
+                font.pixelSize: 16
+                color: "#666666"
+                Layout.alignment: Qt.AlignHCenter
             }
-        }
 
-        Text {
-            text: "Learn More About Blood Donation"
-            color: "#1976D2"
-            font.pixelSize: 16
-            font.underline: true
-            Layout.alignment: Qt.AlignHCenter
-            MouseArea {
-                anchors.fill: parent
-                onClicked: stackView.push("InfoPage.qml")
+            Item { Layout.preferredHeight: 20 } // Spacer
+
+            Button {
+                text: "Login"
+                Layout.fillWidth: true
+                Layout.preferredHeight: 50
+                font.pixelSize: 18
+                onClicked: stackView.push("LoginChoicePage.qml")
+                background: Rectangle {
+                    color: "#FF5733"
+                    radius: 5
+                }
+                contentItem: Text {
+                    text: parent.text
+                    font.bold: true
+                    color: "white"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+
+            Button {
+                text: "Sign Up"
+                Layout.fillWidth: true
+                Layout.preferredHeight: 50
+                font.pixelSize: 18
+                onClicked: stackView.push("SignUpPage.qml")
+                background: Rectangle {
+                    color: "#FF5733"
+                    radius: 5
+                }
+                contentItem: Text {
+                    text: parent.text
+                    font.bold: true
+                    color: "white"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+
+            Item { Layout.preferredHeight: 10 } // Spacer
+
+            Button {
+                text: "Learn More"
+                Layout.fillWidth: true
+                Layout.preferredHeight: 40
+                font.pixelSize: 16
+                onClicked: stackView.push("LearnMorePage.qml")
+                background: Rectangle {
+                    color: "transparent"
+                    border.color: "#FF5733"
+                    border.width: 2
+                    radius: 5
+                }
+                contentItem: Text {
+                    text: parent.text
+                    font.bold: true
+                    color: "#FF5733"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+
+            Item { Layout.fillHeight: true } // Spacer
+
+            Text {
+                text: "© 2024 BloodBound. All rights reserved."
+                font.pixelSize: 12
+                color: "#666666"
+                Layout.alignment: Qt.AlignHCenter
             }
         }
     }
