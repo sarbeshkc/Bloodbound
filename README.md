@@ -1,4 +1,4 @@
-## BloodBound
+# BloodBound
 Recent developments in healthcare have emphasised the need for efficient blood
 donation systems due to the logistical challenges faced by traditional methods.
 The BloodBound project aims to create a system where blood donors can book
@@ -14,9 +14,9 @@ make blood donation more accessible and organised, thereby saving lives. It is
 recommended that the system be implemented across various medical centres to
 maximise its impact.
 
-# Team:
-Sarbesh KC
-Nischal Subedi
-Aarya Pathak
-Suniti Shrestha
-Avipsa Parajuli
+## Team:
+* Sarbesh KC
+* Nischal Subedi
+* Aarya Pathak
+* Suniti Shrestha
+* Avipsa Parajuli
