@@ -1,138 +1,190 @@
-import QtQuick 2.12
-import QtQuick.Controls 2.12
-import QtQuick.Layouts 1.12
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 import QtQuick.Dialogs
 
-Page {
-    id: userLoginPage
 
-    background: Rectangle {
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: "#4A90E2" }
-            GradientStop { position: 1.0; color: "#FFFFFF" }
-        }
-    }
-
-    ColumnLayout {
-        anchors.centerIn: parent
-        spacing: 20
-        width: 300
-
-        TextField {
-            id: emailInput
-            placeholderText: "Enter your email address"
-            Layout.fillWidth: true
-            font.pixelSize: 18
-            background: Rectangle {
-                color: "#FFFFFF"
-                radius: 5
-                border.color: emailInput.activeFocus ? "#4CAF50" : "#CCCCCC"
-                border.width: emailInput.activeFocus ? 2 : 1
-            }
-            leftPadding: 10
-            rightPadding: 10
-        }
+Item {
+    Rectangle {
+        anchors.fill: parent
+        color: "transparent"
 
         RowLayout {
-            Layout.fillWidth: true
-            spacing: 10
+            anchors.fill: parent
+            spacing: 0
 
-            TextField {
-                id: passwordInput
-                placeholderText: "Enter your password"
-                echoMode: TextInput.Password
+            Rectangle {
+                Layout.fillHeight: true
+                Layout.preferredWidth: parent.width * 0.4
+                color: primaryColor
+
+                ColumnLayout {
+                    anchors.centerIn: parent
+                    spacing: 20
+                    width: parent.width
+
+                    Image {
+                        source: "../../Pictures/Logo.png"
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.preferredWidth: Math.min(parent.width * 0.74, parent.height * 1.2)
+                        Layout.preferredHeight: Layout.preferredWidth
+                        fillMode: Image.PreserveAspectFit
+                    }
+
+                    Text {
+                        text: "BloodBound"
+                        font.pixelSize: Math.min(parent.width * 0.15, 48)
+                        font.bold: true
+                        color: "white"
+                        Layout.alignment: Qt.AlignHCenter
+                    }
+
+                    Text {
+                        text: "Connecting donors and hospitals"
+                        font.pixelSize: Math.min(parent.width * 0.05, 18)
+                        color: "white"
+                        opacity: 0.8
+                        Layout.alignment: Qt.AlignHCenter
+                        wrapMode: Text.WordWrap
+                        horizontalAlignment: Text.AlignHCenter
+                        Layout.preferredWidth: parent.width * 0.8
+                    }
+                }
+            }
+
+            Rectangle {
+                Layout.fillHeight: true
                 Layout.fillWidth: true
-                font.pixelSize: 18
-                background: Rectangle {
-                    color: "#FFFFFF"
-                    radius: 5
-                    border.color: passwordInput.activeFocus ? "#4CAF50" : "#CCCCCC"
-                    border.width: passwordInput.activeFocus ? 2 : 1
-                }
-                leftPadding: 10
-                rightPadding: 10
-            }
+                color: "transparent"
 
-            Button {
-                id: togglePasswordVisibility
-                text: passwordInput.echoMode === TextInput.Normal ? "Hide" : "Show"
-                onClicked: {
-                    passwordInput.echoMode = passwordInput.echoMode === TextInput.Normal ? TextInput.Password : TextInput.Normal
-                }
-                background: Rectangle {
-                    color: "#4CAF50"
-                    radius: 5
-                }
-                contentItem: Text {
-                    text: togglePasswordVisibility.text
-                    font.pixelSize: 14
-                    color: "white"
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
-        }
+                ColumnLayout {
+                    anchors.centerIn: parent
+                    spacing: 20
+                    width: parent.width * 0.7
 
-        Button {
-            text: "Login"
-            Layout.fillWidth: true
-            font.pixelSize: 18
-            onClicked: {
-                var email = emailInput.text;
-                var password = passwordInput.text;
-                var success = dbManager.userLogin(email, password);
-                if (success) {
-                    console.log("User login successful");
-                    stackView.push("UserDashboardPage.qml");
-                } else {
-                    console.log("User login failed");
-                    errorDialog.open();
-                }
-            }
-            background: Rectangle {
-                color: "#4CAF50"
-                radius: 5
-            }
-        }
+                    TextField {
+                        id: emailInput
+                        Layout.preferredWidth: 300
+                        font.pixelSize: 16
+                        background: Rectangle {
+                            color: "#FFFFFF"
+                            radius: 5
+                            border.color: emailInput.activeFocus ? window.accentColor : "#CCCCCC"
+                            border.width: emailInput.activeFocus ? 2 : 1
+                        }
+                        leftPadding: 10
+                        rightPadding: 10
 
-        Text {
-            text: "Forgot Password?"
-            color: "#4A90E2"
-            font.pixelSize: 16
-            font.underline: true
-            Layout.alignment: Qt.AlignHCenter
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    stackView.push("PasswordResetPage.qml");
-                }
-            }
-        }
+                        Text {
+                            text: "Email"
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.leftMargin: 12
+                            color: emailInput.displayText.length === 0 ? "#CCCCCC" : "transparent"
+                            font: emailInput.font
+                        }
+                    }
 
-        Text {
-            text: "Don't have an account? Sign up"
-            color: "#4A90E2"
-            font.pixelSize: 16
-            font.underline: true
-            Layout.alignment: Qt.AlignHCenter
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    stackView.push("UserSignupPage.qml");
-                }
-            }
-        }
+                    TextField {
+                        id: passwordInput
+                        placeholderText: "Password"
+                        echoMode: TextInput.Password
+                        Layout.preferredWidth: 300
+                        font.pixelSize: 16
+                        background: Rectangle {
+                            color: "#FFFFFF"
+                            radius: 5
+                            border.color: passwordInput.activeFocus ? window.accentColor : "#CCCCCC"
+                            border.width: passwordInput.activeFocus ? 2 : 1
+                        }
+                        leftPadding: 10
+                        rightPadding: 10
 
-        Text {
-            text: "Back to Main Menu"
-            color: "#4A90E2"
-            font.pixelSize: 16
-            font.underline: true
-            Layout.alignment: Qt.AlignHCenter
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    stackView.pop();
+                        Text {
+
+                            text: "Password"
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.leftMargin: 12
+                            color: passwordInput.displayText.length === 0 ? "#CCCCCC" : "transparent"
+                            font: passwordInput.font
+                        }
+                    }
+
+                    Button {
+                        text: "Login"
+                        Layout.preferredWidth: 300
+                        Layout.preferredHeight: 50
+                        font.pixelSize: 18
+                        onClicked: {
+                            var email = emailInput.text;
+                            var password = passwordInput.text;
+                            var success = dbManager.userLogin(email, password);
+                            if (success) {
+                                console.log("User login successful");
+                                stackView.push("UserDashboardPage.qml");
+                            } else {
+                                console.log("User login failed");
+                                errorDialog.open();
+                            }
+                        }
+                        background: Rectangle {
+                            color: window.accentColor
+                            radius: 25
+                        }
+                        contentItem: Text {
+                            text: parent.text
+                            font.bold: true
+                            color: "white"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                    }
+
+                    // Text {
+                    //     text: "Forgot Password?"
+                    //     color: window.primaryColor
+                    //     font.pixelSize: 14
+                    //     font.underline: true
+                    //     Layout.alignment: Qt.AlignHCenter
+                    //     MouseArea {
+                    //         anchors.fill: parent
+                    //         onClicked: stackView.push("PasswordResetPage.qml")
+                    //     }
+                    // }
+
+                    Text {
+                        text: "                       Sign up"
+                        color: window.primaryColor
+                        font.pixelSize: 20
+                        font.underline: false
+                        Layout.alignment: Qt.AlignHCenter
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: stackView.push("UserSignupPage.qml")
+                        }
+                    }
+
+                    Button {
+                        text: "Back to Main Menu"
+                        Layout.preferredWidth: 300
+                        Layout.preferredHeight: 40
+                        font.pixelSize: 14
+                        onClicked: stackView.pop()
+                        background: Rectangle {
+                            color: "transparent"
+                            border.color: window.primaryColor
+                            border.width: 1
+                            radius: 20
+                        }
+                        contentItem: Text {
+                            text: parent.text
+                            font.bold: true
+                            color: window.primaryColor
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                    }
                 }
             }
         }
@@ -149,8 +201,6 @@ Page {
             font.pixelSize: 14
         }
 
-        onAccepted: {
-            errorDialog.close();
-        }
+        onAccepted: errorDialog.close()
     }
 }
