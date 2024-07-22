@@ -1,176 +1,217 @@
-//hospitalSignupPage
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 
-import QtQuick 2.12
-import QtQuick.Controls 2.12
-import QtQuick.Layouts 1.12
-
-Page {
+Item {
     id: hospitalSignupPage
 
-    background: Rectangle {
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: "#4A90E2" }
-            GradientStop { position: 1.0; color: "#FFFFFF" }
+    Rectangle {
+        anchors.fill: parent
+        color: "transparent"
+
+        RowLayout {
+            anchors.fill: parent
+            spacing: 0
+
+            Rectangle {
+                Layout.fillHeight: true
+                Layout.preferredWidth: parent.width * 0.4
+                color: window.primaryColor
+
+                ColumnLayout {
+                    anchors.centerIn: parent
+                    spacing: 20
+
+                    Image {
+                        source: "../../Pictures/Logo.png"
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.preferredWidth: Math.min(parent.width * 0.6, parent.height * 0.3)
+                        Layout.preferredHeight: Layout.preferredWidth
+                        fillMode: Image.PreserveAspectFit
+                    }
+
+                    Text {
+                        text: "Hospital Sign Up"
+                        font.pixelSize: Math.min(parent.width * 0.15, 36)
+                        font.bold: true
+                        color: "white"
+                        Layout.alignment: Qt.AlignHCenter
+                    }
+
+                    Text {
+                        text: "Join BloodBound and help save lives"
+                        font.pixelSize: Math.min(parent.width * 0.05, 18)
+                        color: "white"
+                        opacity: 0.8
+                        Layout.alignment: Qt.AlignHCenter
+                        wrapMode: Text.WordWrap
+                        horizontalAlignment: Text.AlignHCenter
+                        Layout.preferredWidth: parent.width * 0.8
+                    }
+                }
+            }
+
+            Rectangle {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                color: "white"
+
+                ScrollView {
+                    anchors.fill: parent
+                    clip: true
+
+                    ColumnLayout {
+                        anchors.centerIn: parent
+                        spacing: 20
+                        width: Math.min(parent.width * 0.8, 400)
+
+                        TextField {
+                            id: nameInput
+                            placeholderText: "Hospital Name"
+                            Layout.fillWidth: true
+                            font.pixelSize: 14
+                            background: Rectangle {
+                                color: "#F0F0F0"
+                                radius: 5
+                                border.color: nameInput.activeFocus ? window.accentColor : "#CCCCCC"
+                                border.width: nameInput.activeFocus ? 2 : 1
+                            }
+                            leftPadding: 10
+                            rightPadding: 10
+                            topPadding: 12
+                            bottomPadding: 12
+                        }
+
+                        TextField {
+                            id: emailInput
+                            placeholderText: "Hospital Email Address"
+                            Layout.fillWidth: true
+                            font.pixelSize: 14
+                            background: Rectangle {
+                                color: "#F0F0F0"
+                                radius: 5
+                                border.color: emailInput.activeFocus ? window.accentColor : "#CCCCCC"
+                                border.width: emailInput.activeFocus ? 2 : 1
+                            }
+                            leftPadding: 10
+                            rightPadding: 10
+                            topPadding: 12
+                            bottomPadding: 12
+                        }
+
+                        TextField {
+                            id: passwordInput
+                            placeholderText: "Create Password"
+                            echoMode: TextInput.Password
+                            Layout.fillWidth: true
+                            font.pixelSize: 14
+                            background: Rectangle {
+                                color: "#F0F0F0"
+                                radius: 5
+                                border.color: passwordInput.activeFocus ? window.accentColor : "#CCCCCC"
+                                border.width: passwordInput.activeFocus ? 2 : 1
+                            }
+                            leftPadding: 10
+                            rightPadding: 10
+                            topPadding: 12
+                            bottomPadding: 12
+                        }
+
+                        TextField {
+                            id: confirmPasswordInput
+                            placeholderText: "Confirm Password"
+                            echoMode: TextInput.Password
+                            Layout.fillWidth: true
+                            font.pixelSize: 14
+                            background: Rectangle {
+                                color: "#F0F0F0"
+                                radius: 5
+                                border.color: confirmPasswordInput.activeFocus ? window.accentColor : "#CCCCCC"
+                                border.width: confirmPasswordInput.activeFocus ? 2 : 1
+                            }
+                            leftPadding: 10
+                            rightPadding: 10
+                            topPadding: 12
+                            bottomPadding: 12
+                        }
+
+                        Button {
+                            text: "Sign Up"
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: 50
+                            font.pixelSize: 16
+                            font.bold: true
+                            onClicked: signUp()
+                            background: Rectangle {
+                                color: window.accentColor
+                                radius: 25
+                            }
+                            contentItem: Text {
+                                text: parent.text
+                                font: parent.font
+                                color: "white"
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                        }
+
+                        Text {
+                            text: "Already have an account? Log in"
+                            color: window.primaryColor
+                            font.pixelSize: 14
+                            font.underline: true
+                            Layout.alignment: Qt.AlignHCenter
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: stackView.pop()
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
-    ColumnLayout {
-        anchors.centerIn: parent
-        spacing: 20
-        width: 300
+    Dialog {
+        id: errorDialog
+        title: "Error"
+        standardButtons: Dialog.Ok
 
-        TextField {
-            id: nameInput
-            placeholderText: "Enter hospital name"
-            Layout.fillWidth: true
-            font.pixelSize: 18
-            background: Rectangle {
-                color: "#FFFFFF"
-                radius: 5
-                border.color: nameInput.activeFocus ? "#FF5733" : "#CCCCCC"
-                border.width: nameInput.activeFocus ? 2 : 1
-            }
-            leftPadding: 10
-            rightPadding: 10
+        contentItem: Text {
+            id: errorText
+            color: "#FF0000"
+            font.pixelSize: 14
         }
 
-        TextField {
-            id: emailInput
-            placeholderText: "Enter hospital email address"
-            Layout.fillWidth: true
-            font.pixelSize: 18
-            background: Rectangle {
-                color: "#FFFFFF"
-                radius: 5
-                border.color: emailInput.activeFocus ? "#FF5733" : "#CCCCCC"
-                border.width: emailInput.activeFocus ? 2 : 1
-            }
-            leftPadding: 10
-            rightPadding: 10
+        onAccepted: errorDialog.close()
+    }
+
+    function signUp() {
+        var name = nameInput.text;
+        var email = emailInput.text;
+        var password = passwordInput.text;
+        var confirmPassword = confirmPasswordInput.text;
+
+        if (name.trim() === "" || email.trim() === "" || password.trim() === "" || confirmPassword.trim() === "") {
+            errorText.text = "Please fill in all fields.";
+            errorDialog.open();
+            return;
         }
 
-        RowLayout {
-            Layout.fillWidth: true
-            spacing: 10
-
-            TextField {
-                id: passwordInput
-                placeholderText: "Create a password"
-                echoMode: TextInput.Password
-                Layout.fillWidth: true
-                font.pixelSize: 18
-                background: Rectangle {
-                    color: "#FFFFFF"
-                    radius: 5
-                    border.color: passwordInput.activeFocus ? "#FF5733" : "#CCCCCC"
-                    border.width: passwordInput.activeFocus ? 2 : 1
-                }
-                leftPadding: 10
-                rightPadding: 10
-            }
-
-            Button {
-                id: togglePasswordVisibility
-                text: passwordInput.echoMode === TextInput.Normal ? "Hide" : "Show"
-                onClicked: {
-                    passwordInput.echoMode = passwordInput.echoMode === TextInput.Normal ? TextInput.Password : TextInput.Normal
-                }
-                background: Rectangle {
-                    color: "#FF5733"
-                    radius: 5
-                }
-                contentItem: Text {
-                    text: togglePasswordVisibility.text
-                    font.pixelSize: 14
-                    color: "white"
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
+        if (password !== confirmPassword) {
+            errorText.text = "Passwords do not match.";
+            errorDialog.open();
+            return;
         }
 
-        RowLayout {
-            Layout.fillWidth: true
-            spacing: 10
-
-            TextField {
-                id: confirmPasswordInput
-                placeholderText: "Confirm your password"
-                echoMode: TextInput.Password
-                Layout.fillWidth: true
-                font.pixelSize: 18
-                background: Rectangle {
-                    color: "#FFFFFF"
-                    radius: 5
-                    border.color: confirmPasswordInput.activeFocus ? "#FF5733" : "#CCCCCC"
-                    border.width: confirmPasswordInput.activeFocus ? 2 : 1
-                }
-                leftPadding: 10
-                rightPadding: 10
-            }
-
-            Button {
-                id: toggleConfirmPasswordVisibility
-                text: confirmPasswordInput.echoMode === TextInput.Normal ? "Hide" : "Show"
-                onClicked: {
-                    confirmPasswordInput.echoMode = confirmPasswordInput.echoMode === TextInput.Normal ? TextInput.Password : TextInput.Normal
-                }
-                background: Rectangle {
-                    color: "#FF5733"
-                    radius: 5
-                }
-                contentItem: Text {
-                    text: toggleConfirmPasswordVisibility.text
-                    font.pixelSize: 14
-                    color: "white"
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
-        }
-
-        Button {
-            text: "Sign Up"
-            Layout.fillWidth: true
-            font.pixelSize: 18
-            onClicked: {
-                var name = nameInput.text;
-                var email = emailInput.text;
-                var password = passwordInput.text;
-                var confirmPassword = confirmPasswordInput.text;
-
-                if (password === confirmPassword) {
-                    var success = dbManager.insertHospital(name, email, password);
-                    if (success) {
-                        console.log("Hospital signup successful");
-                        stackView.push("HospitalDashboardPage.qml");
-                    } else {
-                        console.log("Hospital signup failed");
-                        // Show an error message
-                    }
-                } else {
-                    console.log("Passwords do not match");
-                    // Show an error message indicating that the passwords do not match
-                }
-            }
-            background: Rectangle {
-                color: "#FF5733"
-                radius: 5
-            }
-        }
-
-        Text {
-            text: "Already have an account? Log in"
-            color: "#FFFFFF"
-            font.pixelSize: 16
-            font.underline: true
-            Layout.alignment: Qt.AlignHCenter
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    stackView.pop();
-                }
-            }
+        var success = dbManager.insertHospital(name, email, password);
+        if (success) {
+            console.log("Hospital signup successful");
+            stackView.push("HospitalDashboardPage.qml");
+        } else {
+            console.log("Hospital signup failed");
+            errorText.text = "Signup failed. Please try again.";
+            errorDialog.open();
         }
     }
 }

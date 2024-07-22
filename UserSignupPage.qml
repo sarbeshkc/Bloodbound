@@ -177,7 +177,7 @@ Item {
         background: Rectangle {
             color: "#F0F0F0"
             radius: 5
-            border.color: parent.activeFocus ? window.accentColor : "#000000"
+            border.color: parent.activeFocus ? window.accentColor : "#CCCCCC"
             border.width: parent.activeFocus ? 2 : 1
         }
         leftPadding: 10

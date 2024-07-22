@@ -30,8 +30,6 @@ DISTFILES += \
     LoginPage.qml \
     LoginSignupChoicePage.qml \
     MainView.qml \
-    PasswordResetPage.qml \
-    SignUpPage.qml \
     UserDashboardPage.qml \
     UserLoginPage.qml \
     UserSignupPage.qml

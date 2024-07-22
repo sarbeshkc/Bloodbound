@@ -141,18 +141,6 @@ Item {
                         }
                     }
 
-                    // Text {
-                    //     text: "Forgot Password?"
-                    //     color: window.primaryColor
-                    //     font.pixelSize: 14
-                    //     font.underline: true
-                    //     Layout.alignment: Qt.AlignHCenter
-                    //     MouseArea {
-                    //         anchors.fill: parent
-                    //         onClicked: stackView.push("PasswordResetPage.qml")
-                    //     }
-                    // }
-
                     Text {
                         text: "                       Sign up"
                         color: window.primaryColor
