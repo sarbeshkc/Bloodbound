@@ -22,14 +22,13 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    HealthQuestionnairePage.qml \
     HospitalDashboardPage.qml \
     HospitalLoginPage.qml \
     HospitalSignupPage.qml \
     LearnMorePage.qml \
     LoginPage.qml \
-    LoginSignupChoicePage.qml \
     MainView.qml \
+    MockData.qml \
     UserDashboardPage.qml \
     UserLoginPage.qml \
     UserSignupPage.qml

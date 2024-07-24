@@ -1,123 +1,193 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import QtQuick.Dialogs
 
-Page {
-    id: mainMenuPage
+Item {
+    id: userLoginPage
 
-    background: Rectangle {
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: "#FF5733" }
-            GradientStop { position: 1.0; color: "#FFFFFF" }
+    Rectangle {
+        anchors.fill: parent
+        color: window.backgroundColor
+
+        RowLayout {
+            anchors.fill: parent
+            spacing: 0
+
+            Rectangle {
+                Layout.fillHeight: true
+                Layout.preferredWidth: parent.width * 0.4
+                color: window.primaryColor
+
+                ColumnLayout {
+                    anchors.centerIn: parent
+                    spacing: 20
+                    width: parent.width * 0.8
+
+                    Image {
+                        source: "../../Pictures/Logo.png"
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.preferredWidth: Math.min(parent.width * 0.6, 200)
+                        Layout.preferredHeight: Layout.preferredWidth
+                        fillMode: Image.PreserveAspectFit
+                    }
+
+                    Label {
+                        text: qsTr("BloodBound")
+                        font: window.theme.headerFont
+                        color: "white"
+                        Layout.alignment: Qt.AlignHCenter
+                    }
+
+                    Label {
+                        text: qsTr("Connecting donors and hospitals")
+                        font: window.theme.bodyFont
+                        color: "white"
+                        opacity: 0.8
+                        Layout.alignment: Qt.AlignHCenter
+                        wrapMode: Text.WordWrap
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+                }
+            }
+
+            Rectangle {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                color: "white"
+
+                ColumnLayout {
+                    anchors.centerIn: parent
+                    spacing: 20
+                    width: Math.min(parent.width * 0.8, 400)
+
+                    Label {
+                        text: qsTr("Welcome back!")
+                        font: window.theme.headerFont
+                        color: window.primaryColor
+                        Layout.alignment: Qt.AlignHCenter
+                    }
+
+                    Label {
+                        text: qsTr("We're so excited to see you again!")
+                        font: window.theme.bodyFont
+                        color: window.textColor
+                        opacity: 0.7
+                        Layout.alignment: Qt.AlignHCenter
+                    }
+
+                    CustomTextField {
+                        id: emailInput
+                        placeholderText: qsTr("Email")
+                        Layout.fillWidth: true
+                    }
+
+                    CustomTextField {
+                        id: passwordInput
+                        placeholderText: qsTr("Password")
+                        echoMode: TextInput.Password
+                        Layout.fillWidth: true
+                    }
+
+                    Button {
+                        text: qsTr("Login")
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 50
+                        font: window.theme.buttonFont
+                        onClicked: login()
+                        background: Rectangle {
+                            color: window.accentColor
+                            radius: 5
+                        }
+                        contentItem: Text {
+                            text: parent.text
+                            font: parent.font
+                            color: "white"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                    }
+
+                    Text {
+                        text: qsTr("Need an account? Sign up")
+                        color: window.accentColor
+                        font: window.theme.bodyFont
+                        Layout.alignment: Qt.AlignHCenter
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: stackView.push("UserSignupPage.qml")
+                        }
+                    }
+
+                    Item { height: 20 } // Spacer
+
+                    Text {
+                        text: qsTr("Back to Main Menu")
+                        color: window.primaryColor
+                        font: window.theme.bodyFont
+                        Layout.alignment: Qt.AlignHCenter
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: stackView.pop()
+                        }
+                    }
+                }
+            }
         }
     }
 
-    Rectangle {
-        id: menuCard
-        width: parent.width * 0.8
-        height: parent.height * 0.8
-        anchors.centerIn: parent
-        color: "white"
-        radius: 10
+    Dialog {
+        id: errorDialog
+        title: qsTr("Login Failed")
+        standardButtons: Dialog.Ok
 
-        ColumnLayout {
-            anchors.fill: parent
-            anchors.margins: 20
-            spacing: 20
+        contentItem: Text {
+            id: errorText
+            color: "#FF0000"
+            font: window.theme.bodyFont
+            wrapMode: Text.WordWrap
+        }
 
-            Image {
-                source: "qrc:/assets/logo.png" // Make sure to add your logo to the resources
-                Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: 100
-                Layout.preferredHeight: 100
-            }
+        onAccepted: errorDialog.close()
+    }
 
-            Text {
-                text: "BloodBound"
-                font.pixelSize: 32
-                font.bold: true
-                color: "#FF5733"
-                Layout.alignment: Qt.AlignHCenter
-            }
+    // Custom TextField component
+    component CustomTextField: TextField {
+        id: customField
+        font: window.theme.bodyFont
+        placeholderTextColor: "#AAAAAA"
+        color: window.textColor
+        background: Rectangle {
+            color: "#F8F8F8"
+            radius: 5
+            border.color: customField.activeFocus ? window.accentColor : "#DDDDDD"
+            border.width: customField.activeFocus ? 2 : 1
+        }
+        leftPadding: 16
+        rightPadding: 16
+        topPadding: 14
+        bottomPadding: 14
+    }
 
-            Text {
-                text: "Connecting donors and hospitals"
-                font.pixelSize: 16
-                color: "#666666"
-                Layout.alignment: Qt.AlignHCenter
-            }
+    function login() {
+        var email = emailInput.text;
+        var password = passwordInput.text;
 
-            Item { Layout.preferredHeight: 20 } // Spacer
+        if (email.trim() === "" || password.trim() === "") {
+            errorText.text = qsTr("Please enter both email and password.");
+            errorDialog.open();
+            return;
+        }
 
-            Button {
-                text: "Login"
-                Layout.fillWidth: true
-                Layout.preferredHeight: 50
-                font.pixelSize: 18
-                onClicked: stackView.push("LoginChoicePage.qml")
-                background: Rectangle {
-                    color: "#FF5733"
-                    radius: 5
-                }
-                contentItem: Text {
-                    text: parent.text
-                    font.bold: true
-                    color: "white"
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
-
-            Button {
-                text: "Sign Up"
-                Layout.fillWidth: true
-                Layout.preferredHeight: 50
-                font.pixelSize: 18
-                onClicked: stackView.push("SignUpPage.qml")
-                background: Rectangle {
-                    color: "#FF5733"
-                    radius: 5
-                }
-                contentItem: Text {
-                    text: parent.text
-                    font.bold: true
-                    color: "white"
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
-
-            Item { Layout.preferredHeight: 10 } // Spacer
-
-            Button {
-                text: "Learn More"
-                Layout.fillWidth: true
-                Layout.preferredHeight: 40
-                font.pixelSize: 16
-                onClicked: stackView.push("LearnMorePage.qml")
-                background: Rectangle {
-                    color: "transparent"
-                    border.color: "#FF5733"
-                    border.width: 2
-                    radius: 5
-                }
-                contentItem: Text {
-                    text: parent.text
-                    font.bold: true
-                    color: "#FF5733"
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
-
-            Item { Layout.fillHeight: true } // Spacer
-
-            Text {
-                text: "© 2024 BloodBound. All rights reserved."
-                font.pixelSize: 12
-                color: "#666666"
-                Layout.alignment: Qt.AlignHCenter
-            }
+        var success = dbManager.userLogin(email, password);
+        if (success) {
+            console.log("User login successful");
+            var userData = dbManager.getUserData(email);
+            stackView.push("UserDashboardPage.qml", {"userEmail": email, "userData": userData});
+        } else {
+            console.log("User login failed");
+            errorText.text = qsTr("Invalid email or password. Please try again.");
+            errorDialog.open();
         }
     }
 }

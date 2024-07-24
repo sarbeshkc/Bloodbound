@@ -1,13 +1,13 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import QtQuick.Dialogs
-
 
 Item {
+    id: userLoginPage
+
     Rectangle {
         anchors.fill: parent
-        color: "transparent"
+        color: theme.backgroundColor
 
         RowLayout {
             anchors.fill: parent
@@ -16,38 +16,36 @@ Item {
             Rectangle {
                 Layout.fillHeight: true
                 Layout.preferredWidth: parent.width * 0.4
-                color: primaryColor
+                color: theme.primaryColor
 
                 ColumnLayout {
                     anchors.centerIn: parent
                     spacing: 20
-                    width: parent.width
+                    width: parent.width * 0.8
 
                     Image {
                         source: "../../Pictures/Logo.png"
                         Layout.alignment: Qt.AlignHCenter
-                        Layout.preferredWidth: Math.min(parent.width * 0.74, parent.height * 1.2)
+                        Layout.preferredWidth: Math.min(parent.width * 0.6, 200)
                         Layout.preferredHeight: Layout.preferredWidth
                         fillMode: Image.PreserveAspectFit
                     }
 
-                    Text {
-                        text: "BloodBound"
-                        font.pixelSize: Math.min(parent.width * 0.15, 48)
-                        font.bold: true
+                    Label {
+                        text: qsTr("BloodBound")
+                        font: theme.headerFont
                         color: "white"
                         Layout.alignment: Qt.AlignHCenter
                     }
 
-                    Text {
-                        text: "Connecting donors and hospitals"
-                        font.pixelSize: Math.min(parent.width * 0.05, 18)
+                    Label {
+                        text: qsTr("Connecting donors and hospitals")
+                        font: theme.bodyFont
                         color: "white"
                         opacity: 0.8
                         Layout.alignment: Qt.AlignHCenter
                         wrapMode: Text.WordWrap
                         horizontalAlignment: Text.AlignHCenter
-                        Layout.preferredWidth: parent.width * 0.8
                     }
                 }
             }
@@ -55,86 +53,80 @@ Item {
             Rectangle {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                color: "transparent"
+                color: "white"
 
                 ColumnLayout {
                     anchors.centerIn: parent
                     spacing: 20
-                    width: parent.width * 0.7
+                    width: Math.min(parent.width * 0.8, 400)
+
+                    Label {
+                        text: qsTr("Welcome back!")
+                        font: theme.headerFont
+                        color: theme.primaryColor
+                        Layout.alignment: Qt.AlignHCenter
+                    }
+
+                    Label {
+                        text: qsTr("We're so excited to see you again!")
+                        font: theme.bodyFont
+                        color: theme.textColor
+                        opacity: 0.7
+                        Layout.alignment: Qt.AlignHCenter
+                    }
 
                     TextField {
                         id: emailInput
-                        Layout.preferredWidth: 300
-                        font.pixelSize: 16
+                        placeholderText: qsTr("Email")
+                        Layout.fillWidth: true
+                        font: theme.bodyFont
+                        color: theme.textColor
+                        placeholderTextColor: Qt.lighter(theme.textColor, 1.5)
                         background: Rectangle {
-                            color: "#FFFFFF"
+                            color: "#F8F8F8"
                             radius: 5
-                            border.color: emailInput.activeFocus ? window.accentColor : "#CCCCCC"
+                            border.color: emailInput.activeFocus ? theme.accentColor : "#DDDDDD"
                             border.width: emailInput.activeFocus ? 2 : 1
                         }
-                        leftPadding: 10
-                        rightPadding: 10
-
-                        Text {
-                            text: "Email"
-                            anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.leftMargin: 12
-                            color: emailInput.displayText.length === 0 ? "#CCCCCC" : "transparent"
-                            font: emailInput.font
-                        }
+                        leftPadding: 16
+                        rightPadding: 16
+                        topPadding: 14
+                        bottomPadding: 14
                     }
 
                     TextField {
                         id: passwordInput
-                        placeholderText: "Password"
+                        placeholderText: qsTr("Password")
                         echoMode: TextInput.Password
-                        Layout.preferredWidth: 300
-                        font.pixelSize: 16
+                        Layout.fillWidth: true
+                        font: theme.bodyFont
+                        color: theme.textColor
+                        placeholderTextColor: Qt.lighter(theme.textColor, 1.5)
                         background: Rectangle {
-                            color: "#FFFFFF"
+                            color: "#F8F8F8"
                             radius: 5
-                            border.color: passwordInput.activeFocus ? window.accentColor : "#CCCCCC"
+                            border.color: passwordInput.activeFocus ? theme.accentColor : "#DDDDDD"
                             border.width: passwordInput.activeFocus ? 2 : 1
                         }
-                        leftPadding: 10
-                        rightPadding: 10
-
-                        Text {
-
-                            text: "Password"
-                            anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.leftMargin: 12
-                            color: passwordInput.displayText.length === 0 ? "#CCCCCC" : "transparent"
-                            font: passwordInput.font
-                        }
+                        leftPadding: 16
+                        rightPadding: 16
+                        topPadding: 14
+                        bottomPadding: 14
                     }
 
                     Button {
-                        text: "Login"
-                        Layout.preferredWidth: 300
+                        text: qsTr("Login")
+                        Layout.fillWidth: true
                         Layout.preferredHeight: 50
-                        font.pixelSize: 18
-                        onClicked: {
-                            var email = emailInput.text;
-                            var password = passwordInput.text;
-                            var success = dbManager.userLogin(email, password);
-                            if (success) {
-                                console.log("User login successful");
-                                stackView.push("UserDashboardPage.qml");
-                            } else {
-                                console.log("User login failed");
-                                errorDialog.open();
-                            }
-                        }
+                        font: theme.buttonFont
+                        onClicked: login()
                         background: Rectangle {
-                            color: window.accentColor
-                            radius: 25
+                            color: theme.accentColor
+                            radius: 5
                         }
                         contentItem: Text {
                             text: parent.text
-                            font.bold: true
+                            font: parent.font
                             color: "white"
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
@@ -142,10 +134,9 @@ Item {
                     }
 
                     Text {
-                        text: "                       Sign up"
-                        color: window.primaryColor
-                        font.pixelSize: 20
-                        font.underline: false
+                        text: qsTr("Need an account? Sign up")
+                        color: theme.accentColor
+                        font: theme.bodyFont
                         Layout.alignment: Qt.AlignHCenter
                         MouseArea {
                             anchors.fill: parent
@@ -153,24 +144,16 @@ Item {
                         }
                     }
 
-                    Button {
-                        text: "Back to Main Menu"
-                        Layout.preferredWidth: 300
-                        Layout.preferredHeight: 40
-                        font.pixelSize: 14
-                        onClicked: stackView.pop()
-                        background: Rectangle {
-                            color: "transparent"
-                            border.color: window.primaryColor
-                            border.width: 1
-                            radius: 20
-                        }
-                        contentItem: Text {
-                            text: parent.text
-                            font.bold: true
-                            color: window.primaryColor
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
+                    Item { height: 20 } // Spacer
+
+                    Text {
+                        text: qsTr("Back to Main Menu")
+                        color: theme.primaryColor
+                        font: theme.bodyFont
+                        Layout.alignment: Qt.AlignHCenter
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: stackView.push("MainView.qml")
                         }
                     }
                 }
@@ -178,17 +161,78 @@ Item {
         }
     }
 
-    Dialog {
+    // Error dialog
+    Popup {
         id: errorDialog
-        title: "Login Failed"
-        standardButtons: Dialog.Ok
+        anchors.centerIn: parent
+        width: 300
+        height: 150
+        modal: true
+        focus: true
+        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
-        contentItem: Text {
-            text: "Invalid email or password. Please try again."
-            color: "#FF0000"
-            font.pixelSize: 14
+        background: Rectangle {
+            color: "white"
+            border.color: theme.primaryColor
+            border.width: 2
+            radius: 10
         }
 
-        onAccepted: errorDialog.close()
+        contentItem: ColumnLayout {
+            spacing: 20
+            Label {
+                text: qsTr("Login Failed")
+                font: theme.headerFont
+                color: theme.primaryColor
+                Layout.alignment: Qt.AlignHCenter
+            }
+            Label {
+                id: errorText
+                color: theme.textColor
+                font: theme.bodyFont
+                wrapMode: Text.WordWrap
+                Layout.fillWidth: true
+                horizontalAlignment: Text.AlignHCenter
+            }
+            Button {
+                text: qsTr("OK")
+                font: theme.buttonFont
+                Layout.alignment: Qt.AlignHCenter
+                onClicked: errorDialog.close()
+                background: Rectangle {
+                    color: theme.accentColor
+                    radius: 5
+                }
+                contentItem: Text {
+                    text: parent.text
+                    font: parent.font
+                    color: "white"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+        }
+    }
+
+    function login() {
+        var email = emailInput.text;
+        var password = passwordInput.text;
+
+        if (email.trim() === "" || password.trim() === "") {
+            errorText.text = qsTr("Please enter both email and password.");
+            errorDialog.open();
+            return;
+        }
+
+        var success = dbManager.userLogin(email, password);
+        if (success) {
+            console.log("User login successful");
+            var userData = dbManager.getUserData(email);
+            stackView.push("UserDashboardPage.qml", {"userEmail": email, "userData": userData});
+        } else {
+            console.log("User login failed");
+            errorText.text = qsTr("Invalid email or password. Please try again.");
+            errorDialog.open();
+        }
     }
 }

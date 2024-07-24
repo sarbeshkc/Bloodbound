@@ -6,10 +6,11 @@ Item {
     id: userSignupPage
 
     property string selectedBloodGroup: ""
+    property var inputFields: ({})
 
     Rectangle {
         anchors.fill: parent
-        color: "transparent"
+        color: theme.backgroundColor
 
         RowLayout {
             anchors.fill: parent
@@ -18,138 +19,129 @@ Item {
             Rectangle {
                 Layout.fillHeight: true
                 Layout.preferredWidth: parent.width * 0.4
-                color: window.primaryColor
+                color: theme.primaryColor
 
                 ColumnLayout {
                     anchors.centerIn: parent
                     spacing: 20
+                    width: parent.width * 0.8
 
                     Image {
                         source: "../../Pictures/Logo.png"
                         Layout.alignment: Qt.AlignHCenter
-                        Layout.preferredWidth: Math.min(parent.width * 0.74, parent.height * 1.2)
+                        Layout.preferredWidth: Math.min(parent.width * 0.6, 200)
                         Layout.preferredHeight: Layout.preferredWidth
                         fillMode: Image.PreserveAspectFit
                     }
 
-                    Text {
-                        text: "Join BloodBound"
-                        font.pixelSize: Math.min(parent.width * 0.15, 36)
-                        font.bold: true
+                    Label {
+                        text: qsTr("Join BloodBound")
+                        font: theme.headerFont
                         color: "white"
                         Layout.alignment: Qt.AlignHCenter
                     }
 
-                    Text {
-                        text: "Create your account and start saving lives"
-                        font.pixelSize: Math.min(parent.width * 0.05, 18)
+                    Label {
+                        text: qsTr("Create your account and start saving lives")
+                        font: theme.bodyFont
                         color: "white"
                         opacity: 0.8
                         Layout.alignment: Qt.AlignHCenter
                         wrapMode: Text.WordWrap
                         horizontalAlignment: Text.AlignHCenter
-                        Layout.preferredWidth: parent.width * 0.8
                     }
                 }
             }
 
-            Rectangle {
+            ScrollView {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                color: "white"
+                clip: true
 
-                ScrollView {
-                    anchors.fill: parent
-                    clip: true
+                ColumnLayout {
+                    anchors.centerIn: parent
+                    spacing: 20
+                    width: Math.min(parent.width * 0.8, 400)
+
+                    Label {
+                        text: qsTr("Sign Up")
+                        font: theme.headerFont
+                        color: theme.primaryColor
+                        Layout.alignment: Qt.AlignHCenter
+                    }
 
                     ColumnLayout {
-                        anchors.centerIn: parent
-                        spacing: 20
-                        width: Math.min(parent.width * 0.7, 400)
+                        spacing: 10
+                        Layout.fillWidth: true
 
-                        Text {
-                            text: "Sign Up"
-                            font.pixelSize: 32
-                            font.bold: true
-                            color: window.primaryColor
-                            Layout.alignment: Qt.AlignHCenter
-                        }
+                        Repeater {
+                            model: [
+                                {placeholder: qsTr("Full Name"), field: "nameInput"},
+                                {placeholder: qsTr("Email"), field: "emailInput"},
+                                {placeholder: qsTr("Contact Number"), field: "contactNumberInput"},
+                                {placeholder: qsTr("Address"), field: "addressInput"},
+                                {placeholder: qsTr("Health conditions or allergies (optional)"), field: "healthInfoInput"},
+                                {placeholder: qsTr("Password"), field: "passwordInput", isPassword: true},
+                                {placeholder: qsTr("Confirm Password"), field: "confirmPasswordInput", isPassword: true}
+                            ]
 
-                        CustomTextField {
-                            id: nameInput
-                            placeholderText: "Full Name"
-                            Layout.fillWidth: true
-                        }
-
-                        CustomTextField {
-                            id: emailInput
-                            placeholderText: "Email"
-                            Layout.fillWidth: true
-                        }
-
-                        CustomComboBox {
-                            id: bloodGroupComboBox
-                            Layout.fillWidth: true
-                            model: ["Select Blood Group", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
-                            onCurrentTextChanged: {
-                                if (currentIndex !== 0) {
-                                    selectedBloodGroup = currentText
-                                } else {
-                                    selectedBloodGroup = ""
+                            TextField {
+                                Layout.fillWidth: true
+                                placeholderText: modelData.placeholder
+                                echoMode: modelData.isPassword ? TextInput.Password : TextInput.Normal
+                                font: theme.bodyFont
+                                color: theme.textColor
+                                placeholderTextColor: Qt.lighter(theme.textColor, 1.5)
+                                background: Rectangle {
+                                    color: "#F8F8F8"
+                                    radius: 5
+                                    border.color: parent.activeFocus ? theme.accentColor : "#DDDDDD"
+                                    border.width: parent.activeFocus ? 2 : 1
+                                }
+                                Component.onCompleted: {
+                                    inputFields[modelData.field] = this
                                 }
                             }
                         }
 
-                        CustomTextField {
-                            id: healthQuestions
-                            placeholderText: "Health conditions or allergies (optional)"
+                        ComboBox {
+                            id: bloodGroupComboBox
+                            model: ["Select Blood Group", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
                             Layout.fillWidth: true
-                        }
-
-                        CustomTextField {
-                            id: passwordInput
-                            placeholderText: "Password"
-                            echoMode: TextInput.Password
-                            Layout.fillWidth: true
-                        }
-
-                        CustomTextField {
-                            id: confirmPasswordInput
-                            placeholderText: "Confirm Password"
-                            echoMode: TextInput.Password
-                            Layout.fillWidth: true
-                        }
-
-                        Button {
-                            text: "Sign Up"
-                            Layout.fillWidth: true
-                            Layout.preferredHeight: 50
-                            font.pixelSize: 16
-                            font.bold: true
-                            onClicked: signUp()
-                            background: Rectangle {
-                                color: window.accentColor
-                                radius: 25
-                            }
-                            contentItem: Text {
-                                text: parent.text
-                                font: parent.font
-                                color: "white"
-                                horizontalAlignment: Text.AlignHCenter
-                                verticalAlignment: Text.AlignVCenter
+                            font: theme.bodyFont
+                            onCurrentTextChanged: {
+                                selectedBloodGroup = currentIndex !== 0 ? currentText : ""
                             }
                         }
+                    }
 
-                        Text {
-                            text: "Already have an account? Log in"
-                            color: window.primaryColor
-                            font.pixelSize: 14
-                            font.underline: true
-                            Layout.alignment: Qt.AlignHCenter
-                            MouseArea {
-                                anchors.fill: parent
-                                onClicked: stackView.pop()
-                            }
+                    Button {
+                        text: qsTr("Sign Up")
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 50
+                        font: theme.buttonFont
+                        onClicked: signUp()
+                        background: Rectangle {
+                            color: theme.accentColor
+                            radius: 5
+                        }
+                        contentItem: Text {
+                            text: parent.text
+                            font: parent.font
+                            color: "white"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                    }
+
+                    Text {
+                        text: qsTr("Already have an account? Log in")
+                        color: theme.accentColor
+                        font: theme.bodyFont
+                        Layout.alignment: Qt.AlignHCenter
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: stackView.push("UserLoginPage.qml")
                         }
                     }
                 }
@@ -162,70 +154,23 @@ Item {
         title: "Error"
         standardButtons: Dialog.Ok
 
-        contentItem: Text {
+        Label {
             id: errorText
-            color: "#FF0000"
-            font.pixelSize: 14
-        }
-
-        onAccepted: errorDialog.close()
-    }
-
-    // Custom Components
-    component CustomTextField: TextField {
-        font.pixelSize: 14
-        background: Rectangle {
-            color: "#F0F0F0"
-            radius: 5
-            border.color: parent.activeFocus ? window.accentColor : "#CCCCCC"
-            border.width: parent.activeFocus ? 2 : 1
-        }
-        leftPadding: 10
-        rightPadding: 10
-        topPadding: 12
-        bottomPadding: 12
-    }
-
-    component CustomComboBox: ComboBox {
-        id: comboBox
-        font.pixelSize: 14
-        background: Rectangle {
-            color: "#F0F0F0"
-            radius: 5
-            border.color: comboBox.activeFocus ? window.accentColor : "#CCCCCC"
-            border.width: comboBox.activeFocus ? 2 : 1
-        }
-        delegate: ItemDelegate {
-            width: comboBox.width
-            contentItem: Text {
-                text: modelData
-                color: "#333333"
-                font: comboBox.font
-                elide: Text.ElideRight
-                verticalAlignment: Text.AlignVCenter
-            }
-            highlighted: comboBox.highlightedIndex === index
-        }
-        contentItem: Text {
-            leftPadding: 10
-            rightPadding: 30
-            text: comboBox.displayText
-            font: comboBox.font
-            color: comboBox.pressed ? "#666666" : "#333333"
-            verticalAlignment: Text.AlignVCenter
-            elide: Text.ElideRight
+            wrapMode: Text.WordWrap
         }
     }
 
     function signUp() {
-        var name = nameInput.text;
-        var email = emailInput.text;
-        var password = passwordInput.text;
-        var confirmPassword = confirmPasswordInput.text;
+        var name = inputFields.nameInput.text;
+        var email = inputFields.emailInput.text;
+        var password = inputFields.passwordInput.text;
+        var confirmPassword = inputFields.confirmPasswordInput.text;
         var bloodGroup = selectedBloodGroup;
-        var healthInfo = healthQuestions.text;
+        var healthInfo = inputFields.healthInfoInput.text;
+        var contactNumber = inputFields.contactNumberInput.text;
+        var address = inputFields.addressInput.text;
 
-        if (name.trim() === "" || email.trim() === "" || password.trim() === "" || confirmPassword.trim() === "" || bloodGroup === "") {
+        if (name.trim() === "" || email.trim() === "" || password.trim() === "" || confirmPassword.trim() === "" || bloodGroup === "" || contactNumber.trim() === "" || address.trim() === "") {
             errorText.text = "Please fill in all required fields.";
             errorDialog.open();
             return;
@@ -240,8 +185,23 @@ Item {
         // Call the backend function to insert the user
         var success = dbManager.insertUser(name, email, password, bloodGroup, healthInfo);
         if (success) {
-            console.log("User signup successful");
-            stackView.push("UserDashboardPage.qml");
+            // Update user profile with additional information
+            var userData = {
+                "name": name,
+                "bloodGroup": bloodGroup,
+                "healthInfo": healthInfo,
+                "contactNumber": contactNumber,
+                "address": address
+            };
+            success = dbManager.updateUserProfile(email, userData);
+            if (success) {
+                console.log("User signup successful");
+                stackView.push("UserDashboardPage.qml", {"userEmail": email});
+            } else {
+                console.log("User profile update failed");
+                errorText.text = "Signup partially successful. Please update your profile later.";
+                errorDialog.open();
+            }
         } else {
             console.log("User signup failed");
             errorText.text = "Signup failed. Please try again.";
