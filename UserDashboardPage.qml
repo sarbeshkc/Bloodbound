@@ -17,18 +17,35 @@ Page {
             color: "#f2f2f2"
         }
 
-        Label {
-            text: "User Dashboard"
-            font.pixelSize: 20
-            anchors.centerIn: parent
+        RowLayout {
+            anchors.fill: parent
+            anchors.leftMargin: 20
+            anchors.rightMargin: 20
+
+            Label {
+                text: "User Dashboard"
+                font.pixelSize: 20
+                font.bold: true
+                Layout.fillWidth: true
+            }
+
+            Button {
+                text: "Logout"
+                onClicked: {
+                    // Perform logout action and navigate back to login page
+                    stackView.pop()
+                }
+            }
         }
     }
 
     ScrollView {
         anchors.fill: parent
+        anchors.topMargin: 20
 
         ColumnLayout {
-            width: parent.width
+            width: parent.width - 40
+            anchors.centerIn: parent
             spacing: 20
 
             Rectangle {
@@ -96,7 +113,7 @@ Page {
 
             Rectangle {
                 Layout.fillWidth: true
-                Layout.minimumHeight: 200
+                Layout.minimumHeight: 300
                 color: "#e6e6e6"
                 radius: 10
 
@@ -135,15 +152,6 @@ Page {
                         delegate: CommentDelegate
                         clip: true
                     }
-                }
-            }
-
-            Button {
-                text: "Logout"
-                Layout.alignment: Qt.AlignHCenter
-                onClicked: {
-                    // Perform logout action and navigate back to login page
-                    stackView.pop()
                 }
             }
         }
